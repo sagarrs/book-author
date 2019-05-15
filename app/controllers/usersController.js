@@ -4,7 +4,7 @@ const router = express.Router()
 const {User} = require("../models/user")
 const {authenticateUser} = require("../middlewares/authentication")
 
-router.get("/", authenticateUser, (req, res) => {
+router.get("/", (req, res) => {
     User.find()
         .then((user) => {
             res.status("200").send(user)
@@ -15,7 +15,7 @@ router.get("/", authenticateUser, (req, res) => {
 })
 
 
-router.post("/register", authenticateUser, (req, res) => {
+router.post("/register", (req, res) => {
     const body = req.body
 
     const user = new User(body)
@@ -36,12 +36,12 @@ router.post("/login", (req, res) => {
         .then((user) => {
             return user.generateToken()  
         })
-        .then((token) => {
-            // res.send({token})
-            res.setHeader("x-auth", token).send({})
+        .then((user) => {
+            res.send(user)
+            // res.status("200").setHeader("x-auth", token).send(user)
         })
         .catch((err) => {
-            res.send(err)
+            res.status("401").send(err)
         })
 })
 
