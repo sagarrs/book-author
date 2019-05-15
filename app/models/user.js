@@ -122,7 +122,7 @@ userSchema.methods.generateToken = function(){
     // why are we doing this ? may be to send token
     return user.save()
             .then(function(user) {
-                return Promise.resolve(token)
+                return Promise.resolve({user, token})
             })
             .catch(function(err){
                 return Promise.reject(err)
